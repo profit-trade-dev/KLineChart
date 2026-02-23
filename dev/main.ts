@@ -76,8 +76,8 @@ function createChart (): void {
   chart = init('chart')
   if (chart === null) return
 
-  chart.createIndicator('MA', false, { id: 'candle_pane' })
-  chart.createIndicator('VOL')
+  // chart.createIndicator('MA', false, { id: 'candle_pane' })
+  // chart.createIndicator('VOL')
   chart.setDataLoader(dataLoader)
   chart.setSymbol(DEFAULT_SYMBOL)
   chart.setPeriod(DEFAULT_PERIOD)
