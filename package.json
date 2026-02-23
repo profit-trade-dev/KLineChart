@@ -60,6 +60,7 @@
     "build-core": "pnpm build-esm && pnpm build-cjs && pnpm build-umd",
     "build-dts": "dts-bundle-generator --no-banner true --fail-on-class true --umd-module-name klinecharts -o dist/index.d.ts src/index.ts",
     "build": "pnpm clean && pnpm build-core && pnpm build-dts",
+    "dev": "vite --config dev/vite.config.ts",
     "docs:dev": "pnpm -F=docs dev",
     "docs:build": "pnpm build-umd:prod && pnpm -F=docs build",
     "docs:preview": "pnpm -F=docs preview",
@@ -104,6 +105,7 @@
     "shiki": "^2.4.2",
     "tslib": "^2.8.1",
     "typescript": "^5.8.3",
+    "vite": "^7.3.1",
     "vitepress": "2.0.0-alpha.15"
   },
   "pnpm": {

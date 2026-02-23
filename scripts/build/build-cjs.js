@@ -7,4 +7,4 @@ build({
   index,
   fileName,
   format: 'cjs'
-})
+});

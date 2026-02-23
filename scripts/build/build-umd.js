@@ -12,4 +12,4 @@ build({
   format: 'umd',
   parentDir: 'umd',
   name: 'klinecharts'
-})
+});
