@@ -3,12 +3,13 @@ import type { SymbolInfo } from '../src/common/SymbolInfo'
 import type { Period, PeriodType } from '../src/common/Period'
 import type { DataLoader, DataLoaderGetBarsParams, DataLoaderSubscribeBarParams, DataLoaderUnsubscribeBarParams } from '../src/common/DataLoader'
 import type { KLineData } from '../src/common/Data'
+import { styles } from './config'
 
 declare const TradiumDatafeed: any
 
-const UDF_BASE = 'https://api-udf-cug.tradesea.ai/v1'
-const WS_BASE = 'wss://api-mds-stream-cug.tradesea.ai/v1/wss'
-const CLIENT_ID = 'KUPXO86851_PR2HEYLEMVZWKYL4GN6DE7CLKVIFQTZYGY4DKMK7JVHDEV2PG5BVGS2OGZCEON2CKM'
+const UDF_BASE = 'https://prod-market-data.tradesea.ai/v1'
+const WS_BASE = 'wss://prod-market-data.tradesea.ai/v1/wss'
+const CLIENT_ID = 'ZWULU59974_PR2HEYLEMVZWKYL4GN6DE7CLKVIFQTZYGY4DKMK7JVHDEV2PG5BVGS2OGZCEON2CKM'
 const GROUP_ID = 'c9c5a655de36ef6906a6ca706165fac380015bdf20dbb4bfec3601748f63f6a5'
 const DEFAULT_SYMBOL: SymbolInfo = { ticker: 'CME:MES', pricePrecision: 2, volumePrecision: 0 }
 const DEFAULT_PERIOD: Period = { type: 'day', span: 1 }
@@ -73,16 +74,51 @@ const dataLoader: DataLoader = {
 let chart: ReturnType<typeof init> = null
 
 function createChart (): void {
-  chart = init('chart')
-  if (chart === null) return
+  chart = init('chart',{
+    zoomAnchor:'last_bar',
+    layout: [{
+      type: 'candle',
+      options: {
+        axis: {
+          position: 'right',
+          reverse: false,
+          // We use createTicks to force the 0.25 step
+          createTicks: (params) => {
+            console.log(params);
 
-  // chart.createIndicator('MA', false, { id: 'candle_pane' })
-  // chart.createIndicator('VOL')
+            return params.defaultTicks;
+            // const { range, from, to } = params;
+            // const ticks = [];
+            
+            // // Calculate the first tick value that is a multiple of minTick
+            // let currentVal = Math.ceil(from / minTick) * minTick;
+  
+            // // Loop through the visible range and create tick objects
+            // while (currentVal <= to) {
+            //   ticks.push({
+            //     value: currentVal,
+            //     text: currentVal.toFixed(2), // Format to 2 decimal places
+            //     // Note: 'coord' is usually calculated internally by the library 
+            //     // based on value, but you can provide it if doing custom projection.
+            //   });
+            //   currentVal += minTick;
+            // }
+  
+            // Optimization: If there are too many ticks (zoomed out), 
+            // you might want to skip every Nth tick to prevent overlap.
+            // return ticks;
+          }
+        }
+      }
+    }]
+  });
+
+  if (chart === null) return 
   chart.setDataLoader(dataLoader)
   chart.setSymbol(DEFAULT_SYMBOL)
   chart.setPeriod(DEFAULT_PERIOD)
+  chart.setStyles(styles)
 }
-
 // --- Period mapping ---
 
 const RESOLUTION_TO_PERIOD: Record<string, Period> = {

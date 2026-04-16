@@ -13,7 +13,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/udf': {
-        target: 'https://api-udf-cug.tradesea.ai',
+        target: 'https://prod-market-data.tradesea.ai',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/udf/, '/v1')
       }
